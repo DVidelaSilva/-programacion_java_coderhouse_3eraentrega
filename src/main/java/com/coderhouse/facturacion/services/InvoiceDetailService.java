@@ -1,6 +1,9 @@
 package com.coderhouse.facturacion.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +11,21 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coderhouse.facturacion.apis.TimeResponseApi;
 import com.coderhouse.facturacion.dtos.AddProductInInvoiceDto;
+import com.coderhouse.facturacion.dtos.ClientDto;
+
+import com.coderhouse.facturacion.dtos.InvoiceDto;
+import com.coderhouse.facturacion.dtos.LineaDto;
+import com.coderhouse.facturacion.dtos.ProductoDto;
+import com.coderhouse.facturacion.dtos.RespuestaDto;
+import com.coderhouse.facturacion.dtos.TimeResponseDto;
+import com.coderhouse.facturacion.dtos.VoucherDto;
+import com.coderhouse.facturacion.models.Client;
 import com.coderhouse.facturacion.models.Invoice;
 import com.coderhouse.facturacion.models.InvoiceDetail;
 import com.coderhouse.facturacion.models.Product;
+import com.coderhouse.facturacion.repositories.ClientRepository;
 import com.coderhouse.facturacion.repositories.InvoiceDetailRepository;
 import com.coderhouse.facturacion.repositories.InvoiceRepository;
 import com.coderhouse.facturacion.repositories.ProductRepository;
@@ -29,6 +43,12 @@ public class InvoiceDetailService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private TimeResponseApi timeResponseApi;
 
 
 
@@ -60,6 +80,12 @@ public class InvoiceDetailService {
 
         return products;
     }
+
+
+
+
+    
+
 
 
     // Agregar productos a una Factura por ID
@@ -106,7 +132,9 @@ public class InvoiceDetailService {
         invoiceRepository.save(invoice);
 
         return invoiceDetails;
+
     }
+
 
 
     // Actualizar un Detalle de Factura (Amount)

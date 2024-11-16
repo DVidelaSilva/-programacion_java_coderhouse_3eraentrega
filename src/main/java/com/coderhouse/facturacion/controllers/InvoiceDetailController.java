@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coderhouse.facturacion.dtos.AddProductInInvoiceDto;
+import com.coderhouse.facturacion.dtos.ErrorResponse;
+import com.coderhouse.facturacion.dtos.InvoiceDto;
+import com.coderhouse.facturacion.dtos.RespuestaDto;
+import com.coderhouse.facturacion.dtos.VoucherDto;
 import com.coderhouse.facturacion.models.InvoiceDetail;
 import com.coderhouse.facturacion.models.Product;
 import com.coderhouse.facturacion.services.InvoiceDetailService;
@@ -67,6 +71,10 @@ public class InvoiceDetailController {
     public List<Product> getProductsByInvoiceId(@PathVariable Long invoiceId) {
         return invoiceDetailService.getProductsByInvoiceId(invoiceId);
     }
+
+
+
+    
 
 
 

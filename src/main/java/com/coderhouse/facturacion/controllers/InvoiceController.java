@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coderhouse.facturacion.dtos.ErrorResponse;
+import com.coderhouse.facturacion.dtos.RespuestaDto;
+import com.coderhouse.facturacion.dtos.VoucherDto;
 import com.coderhouse.facturacion.models.Invoice;
 import com.coderhouse.facturacion.services.InvoiceService;
 
@@ -127,5 +130,21 @@ public class InvoiceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    
+
+        @PostMapping("/voucher")
+    public ResponseEntity<Object> postVoucher(@RequestBody VoucherDto voucherDto){
+        try {
+
+            RespuestaDto respuestaDto = invoiceService.voucher(voucherDto);
+    
+            return ResponseEntity.ok(respuestaDto);
+            
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(new ErrorResponse("Error: " + e.getMessage()));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Error Inesperado: " + e.getMessage()));
+            }
+        }
 
 }
