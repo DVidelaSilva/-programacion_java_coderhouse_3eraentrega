@@ -17,10 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coderhouse.facturacion.models.Client;
 import com.coderhouse.facturacion.services.ClientService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 
 @RestController
 @RequestMapping("/api/clients")
+@Tag(name = "Gestión de Clientes", description = "Endpoints con el CRUD para gestionar clientes")
 public class ClientController {
 
     @Autowired
@@ -28,6 +36,19 @@ public class ClientController {
 
 
     // Buscar todos los clientes
+    // Docu
+    @Operation(summary = "Obtener un listado con todos los clientes")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de Clientes obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        })
+    })
+    // Metodo
     @GetMapping
     public ResponseEntity<List<Client>> getAllClients(){
         try {
@@ -43,6 +64,23 @@ public class ClientController {
 
 
     //Buscar cliente por ID
+    // Docu
+    @Operation(summary = "Obtener un cliente segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Cliente obtenido Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Cliente no encontrado",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        })
+    })
+    // Metodo
     @GetMapping("/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable Long id){
         try {
@@ -61,6 +99,19 @@ public class ClientController {
 
 
     //Crear un cliente 
+    // Docu
+    @Operation(summary = "Crear un nuevo cliente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Cliente Creado Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        })
+    })
+    // Metodo
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestBody Client client){
         try {
@@ -77,6 +128,23 @@ public class ClientController {
 
     
     // Actualizar a un cliente
+    // Docu
+    @Operation(summary = "Actualizar un parametro de un cliente segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Actualizacion realizada Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Cliente no encontrado",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        })
+    })
+    // Metodo
     @PutMapping("/{id}")
     public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client clientDetails){
         try {
@@ -95,6 +163,23 @@ public class ClientController {
 
 
      // Eliminar un cliente
+     // Docu
+    @Operation(summary = "Eliminar un cliente segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Cliente eliminado Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Cliente no encontrado",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class)),
+        })
+    })
+    // Metodo
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id){
         try {

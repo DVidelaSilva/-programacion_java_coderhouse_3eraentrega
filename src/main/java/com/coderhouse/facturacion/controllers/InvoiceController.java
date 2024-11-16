@@ -20,10 +20,18 @@ import com.coderhouse.facturacion.dtos.VoucherDto;
 import com.coderhouse.facturacion.models.Invoice;
 import com.coderhouse.facturacion.services.InvoiceService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 
 @RestController
 @RequestMapping("/api/invoices")
+@Tag(name = "Gestión de Facturas", description = "Endpoints con el CRUD para gestionar el detalle de facturas")
 public class InvoiceController {
 
     @Autowired
@@ -31,6 +39,19 @@ public class InvoiceController {
 
 
     // Buscar todas las facturas
+    // Docu
+    @Operation(summary = "Obtener un listado con todas ls facturas")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de facturas obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        })
+    })
+    // Metodo
     @GetMapping
     public ResponseEntity<List<Invoice>> getAllInvoice(){
         try {
@@ -48,6 +69,23 @@ public class InvoiceController {
 
     //Buscar factura por ID
     @GetMapping("/{id}")
+    // Docu
+    @Operation(summary = "Obtener una factura segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Factura obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        })
+    })
+    // Metodo
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable Long id){
         try {
             
@@ -65,6 +103,23 @@ public class InvoiceController {
 
 
     //Buscar Facturas del cliente
+    // Docu
+    @Operation(summary = "Obtener una factura segun el ID del Cliente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Factura obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        })
+    })
+    // Metodo
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<Invoice>> getInvoiceBuClientId(@PathVariable Long clientId){
         try {
@@ -85,6 +140,19 @@ public class InvoiceController {
 
 
     //Crear una factura a un cliente
+     // Docu
+     @Operation(summary = "Crear una nueva factura a un cliente por su clienteID")
+     @ApiResponses(value = {
+         @ApiResponse(responseCode = "201", description = "Factura Creada Exitosamente",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+         }),
+         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+         })
+     })
+     // Metodo
     @PostMapping("/create/{clientId}")
     public ResponseEntity<Invoice> createInvoiceForClient(@PathVariable Long clientId, @RequestBody Invoice invoice) {
         try {
@@ -103,6 +171,23 @@ public class InvoiceController {
 
 
     // Actualizar una factura
+    // Docu
+    @Operation(summary = "Actualizar un parametro de una factura segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Actualizacion realizada Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        })
+    })
+    // Metodo
     @PutMapping("/{id}")
     public ResponseEntity<Invoice> updateInvoice(@PathVariable Long id, @RequestBody Invoice invoiceDetails){
         try {
@@ -121,6 +206,23 @@ public class InvoiceController {
 
 
     // Eliminar una factura
+    // Docu
+    @Operation(summary = "Eliminar una factura segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Factura eliminada Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        })
+    })
+    // Metodo
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInvoice(@PathVariable Long id){
         try {
@@ -140,6 +242,19 @@ public class InvoiceController {
 
     
     // Crea el Comprobante al Cliente agregando Productos
+    // Docu
+    @Operation(summary = "Crear un nuevo Voucher(Factura) por el clientID añadiendo producto mediente el productID y persistiendo en el detalle de Factura")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Voucher Creado Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+        })
+    })
+    // Metodo
     @PostMapping("/voucher")
     public ResponseEntity<Object> postVoucher(@RequestBody VoucherDto voucherDto){
         try {

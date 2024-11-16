@@ -14,12 +14,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.coderhouse.facturacion.models.Client;
 import com.coderhouse.facturacion.models.Product;
 import com.coderhouse.facturacion.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/products")
+@Tag(name = "Gestión de Productos", description = "Endpoints con el CRUD para gestionar productos")
 public class ProductController {
 
     @Autowired
@@ -28,6 +36,19 @@ public class ProductController {
 
 
     // Buscar todos los productos
+    // Docu
+    @Operation(summary = "Obtener un listado con todos los productos")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de productos obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        })
+    })
+    // Metodo
     @GetMapping
     public ResponseEntity<List<Product>> getAllProduct(){
         try {
@@ -44,6 +65,23 @@ public class ProductController {
 
 
     //Buscar producto por ID
+    // Docu
+    @Operation(summary = "Obtener un listado de un producto segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Producto obtenido Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        })
+    })
+    // Metodo
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id){
         try {
@@ -62,6 +100,19 @@ public class ProductController {
 
 
     //Crear un producto 
+     // Docu
+     @Operation(summary = "Crear un nuevo producto")
+     @ApiResponses(value = {
+         @ApiResponse(responseCode = "201", description = "Producto Creado Exitosamente",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+         }),
+         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+         })
+     })
+     // Metodo
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
@@ -78,6 +129,23 @@ public class ProductController {
 
 
     // Actualizar a un producto
+     // Docu
+     @Operation(summary = "Actualizar un parametro de un producto segun su ID")
+     @ApiResponses(value = {
+         @ApiResponse(responseCode = "200", description = "Actualizacion realizada Exitosamente",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+         }),
+         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+         }),
+         @ApiResponse(responseCode = "404", description = "Producto no encontrado",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+         })
+     })
+     // Metodo
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateClient(@PathVariable Long id, @RequestBody Product productDetails){
         try {
@@ -96,6 +164,23 @@ public class ProductController {
 
 
     // Eliminar un producto
+    // Docu
+    @Operation(summary = "Eliminar un producto segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Producto eliminado Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)),
+        })
+    })
+    // Metodo
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         try {

@@ -15,21 +15,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coderhouse.facturacion.dtos.AddProductInInvoiceDto;
+import com.coderhouse.facturacion.models.Client;
 import com.coderhouse.facturacion.models.InvoiceDetail;
 import com.coderhouse.facturacion.models.Product;
 import com.coderhouse.facturacion.services.InvoiceDetailService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 
 @RestController
 @RequestMapping("/api/invoice-details")
+@Tag(name = "Gestión de detalle de facturas", description = "Endpoints con el CRUD para gestionar detalle de facturas")
 public class InvoiceDetailController {
  
     @Autowired
     public InvoiceDetailService invoiceDetailService;
 
 
+
+
     // Buscar todos los Detalles de facturas
+        // Docu
+    @Operation(summary = "Obtener un listado con todos los detalles de facturas")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de detalles de facturas obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        })
+    })
+    // Metodo
     @GetMapping
     public ResponseEntity<List<InvoiceDetail>> getAllInvoiceDetails(){
         try {
@@ -46,6 +70,23 @@ public class InvoiceDetailController {
 
 
     //Buscar Detalles de facturas por ID
+    // Docu
+    @Operation(summary = "Obtener un detalle de factura segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "detalle de factura obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "detalle de factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        })
+    })
+    // Metodo
     @GetMapping("/{id}")
     public ResponseEntity<InvoiceDetail> getInvoiceDetailById(@PathVariable Long id){
         try {
@@ -64,6 +105,23 @@ public class InvoiceDetailController {
 
 
     // Busca los productos asociados a una factura
+    // Docu
+    @Operation(summary = "Obtener todos los producto asociados a una factura segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "detalle de factura obtenida Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "detalle de factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        })
+    })
+    // Metodo
     @GetMapping("/{invoiceId}/products")
     public List<Product> getProductsByInvoiceId(@PathVariable Long invoiceId) {
         return invoiceDetailService.getProductsByInvoiceId(invoiceId);
@@ -73,6 +131,19 @@ public class InvoiceDetailController {
 
     
     //Agregar Productos a las Facturas (pasando InvoiceId y los ProductId)
+    // Docu
+    @Operation(summary = "Agregar Productos a las Facturas (pasando InvoiceId y los ProductId")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "detalle de factura Creado Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        })
+    })
+    // Metodo
     @PostMapping
     public ResponseEntity<List<InvoiceDetail>> AddProductToInvoice(@RequestBody AddProductInInvoiceDto addProductInInvoiceDto){
         try {
@@ -92,6 +163,23 @@ public class InvoiceDetailController {
 
 
     // Actualizar Detalles de facturas (amount)
+    // Docu
+    @Operation(summary = "Actualizar un parametro de un detalle de factura segun su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Actualizacion realizada Exitosamente",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        }),
+        @ApiResponse(responseCode = "404", description = "detalle de factura no encontrada",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+        })
+    })
+    // Metodo
     @PutMapping("/{id}")
     public ResponseEntity<InvoiceDetail> updateInvoiceDetail(@PathVariable Long id, @RequestBody InvoiceDetail invoiceDetails){
         try {
@@ -111,6 +199,23 @@ public class InvoiceDetailController {
 
 
     // Eliminar Detalles de facturas
+     // Docu
+     @Operation(summary = "Eliminar un detalle de factura segun su ID")
+     @ApiResponses(value = {
+         @ApiResponse(responseCode = "204", description = "detalle de factura eliminado Exitosamente",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+         }),
+         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+         }),
+         @ApiResponse(responseCode = "404", description = "detalle de factura no encontrado",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
+         })
+     })
+     // Metodo
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInvoiceDetail(@PathVariable Long id){
         try {
