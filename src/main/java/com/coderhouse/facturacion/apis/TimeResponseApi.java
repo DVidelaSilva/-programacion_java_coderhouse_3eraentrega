@@ -26,17 +26,11 @@ public class TimeResponseApi implements TimeResponseInterface{
             return time;
             
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-        // Loguea el cuerpo de la respuesta de error
         System.err.println("Error HTTP: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
         throw new RuntimeException("Error al obtener el Time: " + e.getMessage(), e);
         } catch (Exception e) {
             System.err.println("Error general: " + e.getMessage());
             throw new RuntimeException("Error al obtener el Time: " + e.getMessage(), e);
         }
-
-
     }
-
-    
-
 }

@@ -109,46 +109,41 @@ public class InvoiceService {
     @Transactional
     public RespuestaDto voucher(VoucherDto voucherDto) {
 
-            // Client
-            
-            Client client = clientRepository.findById(voucherDto.getClientId()).orElseThrow(() -> new IllegalArgumentException("Cliente con ID " + voucherDto.getClientId() + " No encontrado"));
+        // Buqueda & validacion del Client
+        Client client = clientRepository.findById(voucherDto.getClientId()).orElseThrow(() -> new IllegalArgumentException("Cliente con ID " + voucherDto.getClientId() + " No encontrado"));
 
-            // Product
+        // Contador de las cantidades de procutos iguales en el array productId del Request
+        Map<Long, Long> productCountMap = new HashMap<>(); 
 
-            Map<Long, Long> productCountMap = new HashMap<>(); 
+        // Contador de productos
+        for (Long productId : voucherDto.getProductId()){
+            productCountMap.put(productId, productCountMap.getOrDefault(productId, 0L) + 1);
+        }
 
-            for (Long productId : voucherDto.getProductId()){
-                productCountMap.put(productId, productCountMap.getOrDefault(productId, 0L) + 1);
-            }
+        // Nuevo array para lineas de productos
+        List<LineaDto> arrayLineaDtos = new ArrayList<>();
 
+        // Inicializador de variables Total Voucher (monto) y total productos en voucher
+        double totalInvoice = 0.0;
+        int totalProduct = 0; 
 
-            List<LineaDto> arrayLineaDtos = new ArrayList<>();
+        // Nuevo array para detalle de productos en el voucher
+        List<InvoiceDetail> arrayInvoiceDetail = new ArrayList<>();
 
-                        // Variable para acumular el total de la factura
-            double totalInvoice = 0.0;
-            int totalProduct = 0; 
-             // Crear la lista de detalles de la factura
-            List<InvoiceDetail> arrayInvoiceDetail = new ArrayList<>();
+        // Recorrer los productos y verificar stock
+        for(Map.Entry<Long, Long> entry : productCountMap.entrySet()){
+            Long productId = entry.getKey();
+            Long count = entry.getValue();
 
-            // Paso 4: Recorrer los productos y verificar stock
-            for(Map.Entry<Long, Long> entry : productCountMap.entrySet()){
-                Long productId = entry.getKey();
-                Long count = entry.getValue();
-
-                // Buscar el producto
+            // Buqueda & validacion del Product
             Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Producto con ID " + productId + " no encontrado"));
 
             // Verificar si el stock es suficiente
             if(count > product.getStock()){
                 throw new IllegalArgumentException("Producto con ID " + productId + " no tiene suficiente Stock");
-
             } 
 
-
-
-            //double totalProduct = 0.0;
-            
-// Crear un DTO de línea de producto para la respuesta
+            // DTO respuesta
             LineaDto lineaDto = new LineaDto();
             lineaDto.setCantidad(count);
 
@@ -158,8 +153,7 @@ public class InvoiceService {
             lineaDto.setProducto(productoDto);
             arrayLineaDtos.add(lineaDto);
 
-
-// Calcular el total para este producto
+            // Calcular el total para este producto
             double productTotal = product.getPrice() * count;
             totalInvoice += productTotal;
 
@@ -174,49 +168,41 @@ public class InvoiceService {
             // Añadir el detalle de la factura a la lista
             arrayInvoiceDetail.add(newInvoiceDetail);
 
-             // Paso adicional: Restar el stock del producto
-        product.setStock(product.getStock() - count);
-        productRepository.save(product); // Guardar el producto actualizado con el nuevo stock
+             // Restar el stock del producto
+            product.setStock(product.getStock() - count);
+            productRepository.save(product); 
 
         }
 
-        // Paso 5: Crear la nueva factura (Invoice)
+        // Creacion nuevo Voucher
         Invoice newInvoice = new Invoice();
         newInvoice.setClient(client);
         newInvoice.setCreatedAt(LocalDateTime.now());
         newInvoice.setTotal(0.0);
-        // Guardar la factura en la base de datos
         invoiceRepository.save(newInvoice);
 
-
-
-         // Paso 6: Asociar la factura a cada detalle
+        // factura a cada detalle
         for(InvoiceDetail invoiceDetail : arrayInvoiceDetail){
             invoiceDetail.setInvoice(newInvoice);
             invoiceDetailRepository.save(invoiceDetail);
         }
 
-         // Paso 7: Actualizar el total de la factura
+        // Actualizar el total de la factura
         newInvoice.setTotal(totalInvoice);
         invoiceRepository.save(newInvoice);
        
 
-    
-        
-
         // Asociar API Fecha
-
         TimeResponseDto timeResponseDto = null;
         try {
              timeResponseDto = timeResponseApi.getAll();
         } catch (Exception e) {
             System.err.println("Error al obtener la fecha de la APi, se Utilizara la fecha actual ");
         }
-
         String currentDateTime = null;
         if(timeResponseDto != null && timeResponseDto.getCurrentDateTime() != null ) {
             try {
-                        // Adaptar Formato
+                    // Adaptar Formato fecha
                     DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
                     LocalDateTime apiDateTime = LocalDateTime.parse(timeResponseDto.getCurrentDateTime(), formatter);
                     currentDateTime = "TimeAPI :: " + apiDateTime.toString();
@@ -228,22 +214,16 @@ public class InvoiceService {
             currentDateTime = "TimeLocal :: " +  LocalDateTime.now().toString();
         }
 
-
-
-            // Paso 8: Crear la respuesta
-            RespuestaDto respuestaDto = new RespuestaDto();
-            ClientDto clientDto = new ClientDto();
-            clientDto.setClienteid(client.getId());
-            respuestaDto.setClient(clientDto);
-            respuestaDto.setLineas(arrayLineaDtos);
-            respuestaDto.setTotal_product(totalProduct);
-            respuestaDto.setTotal_Sale(totalInvoice);
-            respuestaDto.setCreated_at(currentDateTime);
-
-
+        // Crear la respuesta (Response)
+        RespuestaDto respuestaDto = new RespuestaDto();
+        ClientDto clientDto = new ClientDto();
+        clientDto.setClienteid(client.getId());
+        respuestaDto.setClient(clientDto);
+        respuestaDto.setLineas(arrayLineaDtos);
+        respuestaDto.setTotal_product(totalProduct);
+        respuestaDto.setTotal_Sale(totalInvoice);
+        respuestaDto.setCreated_at(currentDateTime);
 
         return respuestaDto;
     } 
-
-
 }

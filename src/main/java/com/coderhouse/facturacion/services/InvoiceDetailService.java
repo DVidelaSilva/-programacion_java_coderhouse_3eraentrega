@@ -13,15 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.coderhouse.facturacion.apis.TimeResponseApi;
 import com.coderhouse.facturacion.dtos.AddProductInInvoiceDto;
-import com.coderhouse.facturacion.dtos.ClientDto;
 
-import com.coderhouse.facturacion.dtos.InvoiceDto;
-import com.coderhouse.facturacion.dtos.LineaDto;
-import com.coderhouse.facturacion.dtos.ProductoDto;
-import com.coderhouse.facturacion.dtos.RespuestaDto;
-import com.coderhouse.facturacion.dtos.TimeResponseDto;
-import com.coderhouse.facturacion.dtos.VoucherDto;
-import com.coderhouse.facturacion.models.Client;
 import com.coderhouse.facturacion.models.Invoice;
 import com.coderhouse.facturacion.models.InvoiceDetail;
 import com.coderhouse.facturacion.models.Product;
@@ -43,12 +35,6 @@ public class InvoiceDetailService {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
-    private TimeResponseApi timeResponseApi;
 
 
 
@@ -80,11 +66,6 @@ public class InvoiceDetailService {
 
         return products;
     }
-
-
-
-
-    
 
 
 

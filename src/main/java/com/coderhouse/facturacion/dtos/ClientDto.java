@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ClientDto {
-    private Long clienteid;  // Representa el ID del cliente
+    private Long clienteid;
 
 }

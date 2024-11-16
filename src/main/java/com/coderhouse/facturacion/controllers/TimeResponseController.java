@@ -10,7 +10,7 @@ import com.coderhouse.facturacion.dtos.TimeResponseDto;
 import com.coderhouse.facturacion.services.TimeResponseService;
 
 @RestController
-@RequestMapping("/api/fecha")
+@RequestMapping("/api/time")
 public class TimeResponseController {
 
     @Autowired
@@ -20,7 +20,6 @@ public class TimeResponseController {
     public ResponseEntity<TimeResponseDto> getTime(){
         try {
 
-            
             TimeResponseDto time = timeResponseService.getAll();
 
             return ResponseEntity.ok(time);

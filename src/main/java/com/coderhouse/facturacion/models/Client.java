@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "clients")
+@Data
 public class Client {
 
     @Id
@@ -33,87 +35,5 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Invoice> invoices;
-
-
-
-
-
-    // CONSTRUCTORES
-
-    public Client() {
-        super();
-    }
-
-     // GETTERS & SETTERS
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getDocNumber() {
-        return docNumber;
-    }
-
-    public void setDocNumber(String docNumber) {
-        this.docNumber = docNumber;
-    }
-
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
-
-    public void setInvoices(List<Invoice> invoices) {
-        this.invoices = invoices;
-    }
-
-
-    // TOSTRING
-
-    @Override
-    public String toString() {
-        return "Client [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", docNumber=" + docNumber
-                + ", invoices=" + invoices + "]";
-    }
-
-
-    
-
-    
-
-
-   
-
-    
-    
-
-    
-
-    
-
-
-
-   
-
-
 
 }

@@ -41,6 +41,7 @@ public class ClientController {
     }
 
 
+
     //Buscar cliente por ID
     @GetMapping("/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable Long id){
@@ -58,6 +59,7 @@ public class ClientController {
     }
 
 
+
     //Crear un cliente 
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestBody Client client){
@@ -73,6 +75,7 @@ public class ClientController {
     }
 
 
+    
     // Actualizar a un cliente
     @PutMapping("/{id}")
     public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client clientDetails){
@@ -88,6 +91,7 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
      // Eliminar un cliente

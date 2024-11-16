@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coderhouse.facturacion.dtos.AddProductInInvoiceDto;
-import com.coderhouse.facturacion.dtos.ErrorResponse;
-import com.coderhouse.facturacion.dtos.InvoiceDto;
-import com.coderhouse.facturacion.dtos.RespuestaDto;
-import com.coderhouse.facturacion.dtos.VoucherDto;
 import com.coderhouse.facturacion.models.InvoiceDetail;
 import com.coderhouse.facturacion.models.Product;
 import com.coderhouse.facturacion.services.InvoiceDetailService;
@@ -31,7 +27,6 @@ public class InvoiceDetailController {
  
     @Autowired
     public InvoiceDetailService invoiceDetailService;
-
 
 
     // Buscar todos los Detalles de facturas
@@ -47,6 +42,7 @@ public class InvoiceDetailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
     //Buscar Detalles de facturas por ID
@@ -66,6 +62,7 @@ public class InvoiceDetailController {
     }
 
 
+
     // Busca los productos asociados a una factura
     @GetMapping("/{invoiceId}/products")
     public List<Product> getProductsByInvoiceId(@PathVariable Long invoiceId) {
@@ -75,10 +72,7 @@ public class InvoiceDetailController {
 
 
     
-
-
-
-    //Agregar Productos a las Facturas
+    //Agregar Productos a las Facturas (pasando InvoiceId y los ProductId)
     @PostMapping
     public ResponseEntity<List<InvoiceDetail>> AddProductToInvoice(@RequestBody AddProductInInvoiceDto addProductInInvoiceDto){
         try {
@@ -93,6 +87,7 @@ public class InvoiceDetailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
 
@@ -111,6 +106,8 @@ public class InvoiceDetailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
 
 
     // Eliminar Detalles de facturas

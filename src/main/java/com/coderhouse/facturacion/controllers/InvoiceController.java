@@ -45,6 +45,7 @@ public class InvoiceController {
     }
 
 
+
     //Buscar factura por ID
     @GetMapping("/{id}")
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable Long id){
@@ -60,6 +61,7 @@ public class InvoiceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
     //Buscar Facturas del cliente
@@ -81,6 +83,7 @@ public class InvoiceController {
     }
 
 
+
     //Crear una factura a un cliente
     @PostMapping("/create/{clientId}")
     public ResponseEntity<Invoice> createInvoiceForClient(@PathVariable Long clientId, @RequestBody Invoice invoice) {
@@ -96,6 +99,7 @@ public class InvoiceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
     // Actualizar una factura
@@ -115,6 +119,7 @@ public class InvoiceController {
     }
 
 
+
     // Eliminar una factura
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInvoice(@PathVariable Long id){
@@ -132,7 +137,10 @@ public class InvoiceController {
     }
     
 
-        @PostMapping("/voucher")
+
+    
+    // Crea el Comprobante al Cliente agregando Productos
+    @PostMapping("/voucher")
     public ResponseEntity<Object> postVoucher(@RequestBody VoucherDto voucherDto){
         try {
 
