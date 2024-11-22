@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coderhouse.facturacion.dtos.AddProductInInvoiceDto;
-import com.coderhouse.facturacion.models.Client;
+
+
 import com.coderhouse.facturacion.models.InvoiceDetail;
 import com.coderhouse.facturacion.models.Product;
 import com.coderhouse.facturacion.services.InvoiceDetailService;
@@ -126,39 +126,6 @@ public class InvoiceDetailController {
     public List<Product> getProductsByInvoiceId(@PathVariable Long invoiceId) {
         return invoiceDetailService.getProductsByInvoiceId(invoiceId);
     }
-
-
-
-    
-    //Agregar Productos a las Facturas (pasando InvoiceId y los ProductId)
-    // Docu
-    @Operation(summary = "Agregar Productos a las Facturas (pasando InvoiceId y los ProductId")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "detalle de factura Creado Exitosamente",
-        content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
-        }),
-        @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
-        content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDetail.class)),
-        })
-    })
-    // Metodo
-    @PostMapping
-    public ResponseEntity<List<InvoiceDetail>> AddProductToInvoice(@RequestBody AddProductInInvoiceDto addProductInInvoiceDto){
-        try {
-
-        List<InvoiceDetail> invoiceDetails = invoiceDetailService.addProductInInvoice(addProductInInvoiceDto);
-
-        return ResponseEntity.ok(invoiceDetails);
-        
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
 
 
 

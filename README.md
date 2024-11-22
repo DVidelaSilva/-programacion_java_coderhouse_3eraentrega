@@ -78,7 +78,6 @@ El proyecto permite gestionar lo relacionado a un comercio y 4 de sus modelos
 - GET : api/invoice-details -> Este endpoint devuelve el listado completo de invoice-details que se encuentran registrados en BD.
 - GET : api/invoice-details/{id} -> Este endpoint devuele el invoice-details buscado segun el ID del invoice-details ( NOTA: id para esta proyecto, un numerico (ej: api/invoice-details/1 )).
 - GET : api/invoice-details/{id}/products -> Este endpoint devuele el detalle de los productos que estan en un invoiceID que es el valor que se pasa como parametro.(ej: api/invoice-details/1/products )
-- POST : api/invoice-details -> Este endpoint permite crear un nuevo invoice-details en BD. se requiere el invoiceId que es el ID del invoice al cual se creara o ya se encuentra creado, y el productId que es un array de ID´s de productos los cuales se añadiran el invoice(voucher), el response del servicio es un detalle donde se encuentra el invoiceID, el clientId dueño del invoice y sus informacion de cliente, la fecha de creacion "createdAt" y el "total" que el valor total actual del invoice.
 - PUT: api/invoice-details/{id} -> Este endpoint permite actualizar un invoice-details buscado segun el ID, solo es posible modificar el campo "amount", ( NOTA: id para esta proyecto, un numerico (ej: api/invoice-details/1 )).
 - DELETE : api/invoice-details/{id} -> Este endpoint elimina de la BD el invoice-details buscado segun el ID ( NOTA: id para esta proyecto, un numerico (ej: api/invoice-details/1 ))
 

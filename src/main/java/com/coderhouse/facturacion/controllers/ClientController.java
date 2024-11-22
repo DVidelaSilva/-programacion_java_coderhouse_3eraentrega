@@ -114,6 +114,10 @@ public class ClientController {
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
+        }),
+        @ApiResponse(responseCode = "409", description = "Conflicto. Registro duplicado",
+        content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
@@ -131,7 +135,7 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
             
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: El cliente ya se encuentra registrado en la BD");
         }
     }
 

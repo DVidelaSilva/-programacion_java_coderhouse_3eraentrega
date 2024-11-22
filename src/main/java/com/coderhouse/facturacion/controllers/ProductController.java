@@ -115,6 +115,10 @@ public class ProductController {
          @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
          content = {
              @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
+         }),
+         @ApiResponse(responseCode = "409", description = "Conflicto. Registro duplicado",
+         content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
          })
      })
      // Metodo
@@ -133,7 +137,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
             
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: El producto ya se encuentra registrado en la BD");
         }
     }
 
