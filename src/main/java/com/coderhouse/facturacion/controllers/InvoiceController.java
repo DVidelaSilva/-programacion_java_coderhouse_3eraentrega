@@ -48,7 +48,7 @@ public class InvoiceController {
         }),
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
@@ -78,11 +78,11 @@ public class InvoiceController {
         }),
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         }),
         @ApiResponse(responseCode = "404", description = "Factura no encontrada",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
@@ -94,7 +94,7 @@ public class InvoiceController {
             return ResponseEntity.ok(invoice);
 
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -112,11 +112,11 @@ public class InvoiceController {
         }),
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         }),
         @ApiResponse(responseCode = "404", description = "Factura no encontrada",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
@@ -127,7 +127,7 @@ public class InvoiceController {
             List<Invoice> invoices = invoiceService.getInvoicesByClientId(clientId);
 
             if(invoices.isEmpty()){
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
             return ResponseEntity.ok(invoices);
@@ -149,7 +149,7 @@ public class InvoiceController {
          }),
          @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
          content = {
-             @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
          })
      })
      // Metodo
@@ -159,10 +159,10 @@ public class InvoiceController {
 
             Invoice createdInvoice = invoiceService.createInvoiceToClient(clientId, invoice);
 
-            return ResponseEntity.ok(createdInvoice);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdInvoice);
 
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -180,11 +180,11 @@ public class InvoiceController {
         }),
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         }),
         @ApiResponse(responseCode = "404", description = "Factura no encontrada",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
@@ -197,7 +197,7 @@ public class InvoiceController {
             return ResponseEntity.ok(updateInvoice);
             
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -215,11 +215,11 @@ public class InvoiceController {
         }),
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         }),
         @ApiResponse(responseCode = "404", description = "Factura no encontrada",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
@@ -232,7 +232,7 @@ public class InvoiceController {
             return ResponseEntity.noContent().build();
             
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -251,7 +251,7 @@ public class InvoiceController {
         }),
         @ApiResponse(responseCode = "500", description = "Error Interno del servidor",
         content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)),
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)),
         })
     })
     // Metodo
