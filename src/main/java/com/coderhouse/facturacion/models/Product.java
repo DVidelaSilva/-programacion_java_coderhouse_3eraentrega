@@ -18,6 +18,7 @@ import lombok.Data;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -28,13 +29,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Data
 public class Product {
 
-    @Schema(description = "productoId", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     
-    @Schema(description = "description", requiredMode = Schema.RequiredMode.REQUIRED, example = "celular marca x")
+    @Schema(description = "description",  example = "celular marca x")
     @NotBlank(message = "El campo description no puede estar vacío")
     @Size(max = 150, message="El description excede la cantidad de caracteres Permitidos")
     @Column(name = "description", length = 150, nullable = false)

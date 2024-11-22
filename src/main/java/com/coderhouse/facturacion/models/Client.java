@@ -17,6 +17,7 @@ import lombok.Data;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -27,9 +28,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Data
 public class Client {
 
-    @Schema(description = "ID del cliente", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @Schema(description = "ID del cliente", hidden = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @Schema(description = "firstName del cliente", requiredMode = Schema.RequiredMode.REQUIRED, example = "Luis")

@@ -124,6 +124,10 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<?> createClient(@RequestBody @Valid Client client, BindingResult result){
         try {
+            if (client.getId() != null && client.getId() > 0) {
+                return ResponseEntity.badRequest().body("No se debe enviar el ID en la solicitud.");
+            }
+
             if(result.hasErrors()){
                 List<String> errorMessages = result.getFieldErrors().stream()
                     .map(FieldError::getDefaultMessage)

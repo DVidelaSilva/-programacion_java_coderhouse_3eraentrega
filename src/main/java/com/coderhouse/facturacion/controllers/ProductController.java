@@ -125,6 +125,11 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody @Valid Product product, BindingResult result){
         try {
+
+            if (product.getId() != null && product.getId() > 0) {
+                return ResponseEntity.badRequest().body("No se debe enviar el ID en la solicitud.");
+            }
+
             if(result.hasErrors()){
                 List<String> errorMessages = result.getFieldErrors().stream()
                     .map(FieldError::getDefaultMessage)
